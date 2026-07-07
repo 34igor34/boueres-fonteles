@@ -20,3 +20,4 @@ class Pessoa:
     @tipo.setter
     def tipo(self, tipo):
         self._tipo = tipo
+    

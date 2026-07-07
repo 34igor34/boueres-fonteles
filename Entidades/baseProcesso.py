@@ -1,10 +1,14 @@
+from Entidades.autor import AutorProcesso
+from Entidades.advogado import Advogado
+from Entidades.parceiro import Parceiro
+from Util.enums import TipoProcesso
 class Processo:
     def __init__(
         self,
         autor: list[AutorProcesso],
         advogado: list[Advogado],
         parceiro: Parceiro,
-        tipo: TipoProcesso,
+        tipo: TipoProcesso
     ):
         self._autor = autor
         self._advogado = advogado

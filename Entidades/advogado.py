@@ -1,6 +1,7 @@
 from Entidades.basePessoa import Pessoa
 from Util.enums import TipoParte
 from Util.value_objects import _coagir, OAB
+
 class Advogado(Pessoa):
     def __init__(self, nome, tipo: TipoParte, oab):
         super().__init__(nome, tipo)

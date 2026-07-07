@@ -1,7 +1,18 @@
 from typing import Type, TypeVar, overload
+from datetime import datetime
 import re
 T = TypeVar("T")
 
+class DataEntrada:
+    #Formato de data esperado: DD/MM/YYYY HH:MM
+    def __init__(self, valor: str):
+        pass
+    
+    #Formato de data esperado: DD/MM/YYYY HH:MM
+class DataAjuizamento:
+    def __init__(self):
+        pass
+        
 class Nome:
     """Nome de uma pessoa. Não pode ser vazio."""
 
@@ -215,7 +226,7 @@ class Contato:
 
 
 @overload
-def _coagir(valor: object, classe: Type[Contato]) -> Contato | None:
+def _coagir(valor: object, classe: Type[Contato] | Type[ProtocoloRequerimento]) -> Contato | None:
     ...
 
 @overload
