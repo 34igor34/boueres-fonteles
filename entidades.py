@@ -1,21 +1,33 @@
 from enum import Enum
 class TipoParte(Enum):
-    ADVOGADO = 1
-    AUTOR = 2
-    PARCEIRO = 3
+    ADVOGADO = "advogado"
+    AUTOR = "autor"
+    REPRESENTANTE = "representante"
+    PARCEIRO = "parceiro"
+
+class TipoRepresentante(Enum):
+    MAE = "mãe"
+    PAI = "pai"
+    TUTOR = "tutor"
+    TUTORA = "tutora"
+    GUARDIAO = "guardião"
+    GUARDIA = "guardiã"
 
 class TipoProcesso(Enum):
-    ADMINISTRATIVO = 1
-    JUSTICA = 2
+    ADMINISTRATIVO = "administrativo"
+    JUSTICA = "justiça"
 
 class TipoRequerimento(Enum):
-    SALARIO_URBANO = 0
-    SALARIO_RURAL = 1
-    LOAS = 2
-    API_RURAL = 3
-    API_URBANO = 4
-    PENSAO_MORTE_RURAL = 5
-    PENSAO_MORTE_URBANO = 6
+    SALARIO_URBANO = "salario"
+    SALARIO_RURAL = "salário urbano"
+    LOAS = "loas"
+    LOAS_IDOSO = "loas idoso"
+    API_RURAL = "api rural"
+    API_URBANO = "api urbano"
+    PENSAO_MORTE_RURAL = "pensão rural"
+    PENSAO_MORTE_URBANO = "pensão urbano"
+    AUX_DOENCA_RURAL = "aux doença rural"
+    AUX_DOENCA_URBANO = "aux doença urbano"
 
 class CodigoProcesso(Enum):
     AUX_DOENCA_RURAL = "6101"
@@ -23,11 +35,11 @@ class CodigoProcesso(Enum):
     SALARIO_URBANO = "14828"  
     SALARIO_RURAL = "6103"  
     LOAS = "11946"
+    LOAS_IDOSO = "11947"
     API_RURAL = "6098"
     API_URBANO = "6097"
     API_HIBRIDA = "12399"
     PENSAO_MORTE = "6104"
-
 
 class Pessoa:
     def __init__(self, nome: str, tipo: TipoParte):
@@ -53,12 +65,12 @@ class Pessoa:
         self._tipo = tipo
 
 class Advogado(Pessoa):
-    def __init__(self, nome: str, tipo: str, oab: str):
+    def __init__(self, nome: str, tipo: TipoParte, oab: str):
         super().__init__(nome, tipo)
         self._oab = oab
 
     @property
-    def oab(self):
+    def oab(self) -> str:
         return self._oab
 
     @oab.setter
@@ -78,6 +90,38 @@ class AutorProcesso(Pessoa):
     def cpf(self, cpf):
         self._cpf = cpf
 
+class RepresentanteProcesso(Pessoa):
+    def __init__(self, nome, tipo, cpf, tipoRepresentante: TipoRepresentante):
+        super().__init__(nome, tipo)
+        self._cpf = cpf
+        self._tipo_representante = tipoRepresentante
+
+    @property
+    def cpf(self):
+        return self._cpf
+
+    @cpf.setter
+    def cpf(self, cpf):
+        self._cpf = cpf
+
+    @property
+    def tipoRepresentante(self):
+        return self._tipo_representante
+
+    @tipoRepresentante.setter
+    def tipoRepresentante(self, tipo):
+        if isinstance(tipo, TipoRepresentante):
+            self._tipo_representante = tipo
+        elif isinstance(tipo, str):
+            try:
+                # tenta por nome da enum (MAE, PAI, ...)
+                self._tipo_representante = TipoRepresentante[tipo]
+            except KeyError:
+                # tenta pelo valor ("mae", "pai", ...")
+                self._tipo_representante = TipoRepresentante(tipo.lower())
+        else:
+            raise ValueError("tipoRepresentante inválido")
+
 class Parceiro(Pessoa):
     def __init__(self, nome, tipo, contato = None):
         super().__init__(nome, tipo)
@@ -92,14 +136,14 @@ class Parceiro(Pessoa):
         self._contato = contato
 
 class Processo:
-    def __init__(self, autor: AutorProcesso, advogado: Advogado, parceiro: Parceiro, tipo: TipoProcesso):
+    def __init__(self, autor: list[AutorProcesso], advogado: list[Advogado], parceiro: Parceiro, tipo: TipoProcesso):
         self._autor = autor
         self._advogado = advogado
         self._parceiro = parceiro
         self._tipo = tipo
 
     @property
-    def autor(self):
+    def autor(self) -> list[AutorProcesso]:
         return self._autor
 
     @autor.setter
@@ -107,7 +151,7 @@ class Processo:
         self._autor = autor
 
     @property
-    def advogado(self):
+    def advogado(self) -> list[Advogado]:
         return self._advogado
 
     @advogado.setter
@@ -115,7 +159,7 @@ class Processo:
         self._advogado = advogado
 
     @property
-    def parceiro(self):
+    def parceiro(self) -> Parceiro:
         return self._parceiro
 
     @parceiro.setter
@@ -131,7 +175,7 @@ class Processo:
         self._tipo = tipo
 
 class ProcessoAdministrativo(Processo):
-    def __init__(self, autor: AutorProcesso, advogado: Advogado, parceiro: Parceiro, protocolo_requerimento: str):
+    def __init__(self, autor: list[AutorProcesso], advogado: list[Advogado], parceiro: Parceiro, protocolo_requerimento: str):
         super().__init__(autor, advogado, parceiro, TipoProcesso.ADMINISTRATIVO)
         self._protocolo_requerimento = protocolo_requerimento
 
@@ -144,7 +188,7 @@ class ProcessoAdministrativo(Processo):
         self._protocolo_requerimento = protocolo_requerimento
 
 class ProcessoJustica(Processo):
-    def __init__(self, autor: AutorProcesso, advogado: Advogado, parceiro: Parceiro, numero_processo: str, codigos: list[CodigoProcesso]):
+    def __init__(self, autor: list[AutorProcesso], advogado: list[Advogado], parceiro: Parceiro, numero_processo: str, codigos: list[CodigoProcesso]):
         super().__init__(autor, advogado, parceiro, TipoProcesso.JUSTICA)
         self._numero_processo = numero_processo
         self._codigos = codigos
