@@ -1,23 +1,15 @@
 from Util.enums import TipoParte
-from Util.value_objects import _coagir, Nome
+from Util.value_objects import Nome
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
 class Pessoa:
-    def __init__(self, nome, tipo: TipoParte):
-        self.nome = nome
-        self._tipo = tipo
-
-    @property
-    def nome(self) -> Nome:
-        return self._nome
-
-    @nome.setter
-    def nome(self, nome):
-        self._nome = _coagir(nome, Nome)
-
-    @property
-    def tipo(self):
-        return self._tipo
-
-    @tipo.setter
-    def tipo(self, tipo):
-        self._tipo = tipo
+    nome: Nome
+    tipo_parte: TipoParte
     
+    @classmethod
+    def criar(cls, nome: str, tipo_parte: TipoParte):
+        return cls(
+            nome=Nome(nome),
+            tipo_parte=tipo_parte
+        )

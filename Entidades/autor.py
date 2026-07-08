@@ -1,14 +1,12 @@
-from Entidades.basePessoa import Pessoa
-from Util.value_objects import _coagir, CPF
+from Entidades.basePessoa import Pessoa, TipoParte
+from Util.value_objects import CPF
+from dataclasses import dataclass
+
+@dataclass
 class AutorProcesso(Pessoa):
-    def __init__(self, nome, tipo, cpf):
-        super().__init__(nome, tipo)
-        self.cpf = cpf
+    cpf = CPF
 
-    @property
-    def cpf(self) -> CPF:
-        return self._cpf
-
-    @cpf.setter
-    def cpf(self, cpf):
-        self._cpf = _coagir(cpf, CPF)
+    @classmethod
+    def criar(cls, nome: str, tipo: TipoParte, cpf: str ):
+        pessoa = super().criar(nome, tipo)
+        return cls(nome=pessoa.nome, tipo=pessoa.tipo)

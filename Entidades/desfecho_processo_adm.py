@@ -10,7 +10,6 @@ from Entidades.baseProcesso import Processo
 class ResultadoBeneficio(ABC):
     ...
 
-
 @dataclass(frozen=True, slots=True)
 class Concedido(ResultadoBeneficio):
     ...

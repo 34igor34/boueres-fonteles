@@ -22,16 +22,16 @@ class TipoProcesso(Enum):
 
 
 class TipoRequerimento(Enum):
-    SALARIO_URBANO = "salario"
-    SALARIO_RURAL = "salário urbano"
-    LOAS = "loas"
-    LOAS_IDOSO = "loas idoso"
-    API_RURAL = "api rural"
-    API_URBANO = "api urbano"
-    PENSAO_MORTE_RURAL = "pensão rural"
-    PENSAO_MORTE_URBANO = "pensão urbano"
-    AUX_DOENCA_RURAL = "aux doença rural"
-    AUX_DOENCA_URBANO = "aux doença urbano"
+    SALARIO_URBANO = "Salario"
+    SALARIO_RURAL = "Salário urbano"
+    LOAS = "LOAS"
+    LOAS_IDOSO = "LOAS idoso"
+    API_RURAL = "API rural"
+    API_URBANO = "API urbano"
+    PENSAO_MORTE_RURAL = "Pensão rural"
+    PENSAO_MORTE_URBANO = "Pensão urbano"
+    AUX_DOENCA_RURAL = "Aux. doença rural"
+    AUX_DOENCA_URBANO = "Aux. doença urbano"
 
 
 class CodigoProcesso(Enum):

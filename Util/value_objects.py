@@ -3,16 +3,22 @@ from datetime import datetime
 import re
 T = TypeVar("T")
 
+class NumeroBeneficio:
+    def __init__(self, valor: str):
+        pass
+
 class DataEntrada:
     #Formato de data esperado: DD/MM/YYYY HH:MM
     def __init__(self, valor: str):
         pass
     
     #Formato de data esperado: DD/MM/YYYY HH:MM
+
 class DataAjuizamento:
     def __init__(self):
         pass
-        
+
+
 class Nome:
     """Nome de uma pessoa. Não pode ser vazio."""
 
