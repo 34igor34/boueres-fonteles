@@ -1,6 +1,6 @@
-from Entidades.autor import AutorProcesso
-from Entidades.advogado import Advogado
-from Entidades.parceiro import Parceiro
+from Entidades.Partes.autor import AutorProcesso
+from Entidades.Partes.advogado import Advogado
+from Entidades.Partes.parceiro import Parceiro
 from Util.enums import TipoProcesso
 from dataclasses import dataclass
 

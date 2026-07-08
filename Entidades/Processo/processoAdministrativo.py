@@ -1,19 +1,16 @@
-from Entidades.autor import AutorProcesso
-from Entidades.advogado import Advogado
-from Entidades.parceiro import Parceiro
-from Entidades.baseProcesso import Processo
-from Entidades.desfecho_processo_adm import Desfecho, Exigencia, Cancelado, Concluido, ResultadoBeneficio
+from Entidades.Partes.autor import AutorProcesso
+from Entidades.Partes.advogado import Advogado
+from Entidades.Partes.parceiro import Parceiro
+from Entidades.Processo.baseProcesso import Processo
+from Entidades.Processo.desfecho_processo_adm import Desfecho, Exigencia, Cancelado, Concluido, ResultadoBeneficio
 from datetime import date
 from dataclasses import dataclass
-from Util.value_objects import ProtocoloRequerimento, DataEntrada
+from Util.value_objects import NumeroProtocolo, DataEntradaRequerimento
 
 @dataclass(slots=True)
 class ProcessoAdministrativo(Processo):
-    autor: list[AutorProcesso]
-    advogado: list[Advogado]
-    parceiro: Parceiro
-    data_entrada:DataEntrada
-    protocolo_requerimento = ProtocoloRequerimento | None
+    data_entrada:DataEntradaRequerimento
+    numero_protocolo = NumeroProtocolo | None
     desfecho: Desfecho | None # None enquanto o processo está em andamento
 
     def concluir(self, numero_beneficio: str, resultado: ResultadoBeneficio) -> None:

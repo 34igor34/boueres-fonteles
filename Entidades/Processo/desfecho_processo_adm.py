@@ -3,8 +3,8 @@ from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass
 from datetime import date, datetime
-from Entidades.processoAdministrativo import ProcessoAdministrativo
-from Entidades.baseProcesso import Processo
+from Entidades.Processo.processoAdministrativo import ProcessoAdministrativo
+from Entidades.Processo.baseProcesso import Processo
 # Resultado do benefício — só existe quando o processo é CONCLUÍDO
 
 class ResultadoBeneficio(ABC):

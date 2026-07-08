@@ -1,4 +1,4 @@
-from Entidades.basePessoa import Pessoa
+from Entidades.Partes.basePessoa import Pessoa
 from Util.value_objects import Contato
 from dataclasses import dataclass
 

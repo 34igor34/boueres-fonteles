@@ -1,27 +1,43 @@
 from typing import Type, TypeVar, overload
-from datetime import datetime
+from dataclasses import dataclass
 import re
 T = TypeVar("T")
 
-class NumeroBeneficio:
-    def __init__(self, valor: str):
-        pass
+PADRAO_NUM_BENEFICIO = r'^\d{3}\.\d{3}\.\d{3}-\d$'
 
-class DataEntrada:
+class NumeroBeneficio:
+    #Padrão 000.000.000-0
+    def __init__(self, valor: str):
+        if valor is None or not str(valor).strip():
+            raise ValueError("Numero de benefício inválido: não pode ser vazio")
+        if not re.fullmatch(PADRAO_NUM_BENEFICIO, valor):
+            raise ValueError("Numero de benefício inválido: valor incompátivel com padrão")
+
+        self._valor = str(valor).strip()
+
+    @property
+    def valor(self) -> str:
+        return self._valor
+    
+@dataclass
+class Jurisdicao:
+    orgao: str
+    regiao: str
+    secao_judiciaria: str
+
+class DataEntradaRequerimento:
     #Formato de data esperado: DD/MM/YYYY HH:MM
     def __init__(self, valor: str):
         pass
     
     #Formato de data esperado: DD/MM/YYYY HH:MM
 
-class DataAjuizamento:
+class DataDistribuicao:
     def __init__(self):
         pass
 
-
 class Nome:
     """Nome de uma pessoa. Não pode ser vazio."""
-
     def __init__(self, valor: str):
         if valor is None or not str(valor).strip():
             raise ValueError("Nome inválido: não pode ser vazio")
@@ -42,7 +58,6 @@ class Nome:
 
     def __hash__(self) -> int:
         return hash(self._valor.lower())
-
 
 class CPF:
     """CPF com validação dos dígitos verificadores (algoritmo oficial)."""
@@ -93,7 +108,6 @@ class CPF:
     def __hash__(self) -> int:
         return hash(self._valor)
 
-
 class OAB:
     """Número de inscrição na OAB, no formato NNNNNN/UF."""
 
@@ -131,7 +145,6 @@ class OAB:
     def __hash__(self) -> int:
         return hash((self._numero, self._uf))
 
-
 class NumeroProcesso:
     """Número Único de Processo (padrão CNJ): NNNNNNN-DD.AAAA.J.TR.OOOO"""
 
@@ -161,8 +174,7 @@ class NumeroProcesso:
     def __hash__(self) -> int:
         return hash(self._valor)
 
-
-class ProtocoloRequerimento:
+class NumeroProtocolo:
     """Protocolo de requerimento administrativo (ex.: INSS). Só dígitos, 9 a 15 posições."""
 
     _PADRAO = re.compile(r"^\d{9,15}$")
@@ -188,7 +200,6 @@ class ProtocoloRequerimento:
 
     def __hash__(self) -> int:
         return hash(self._valor)
-
 
 class Contato:
     """Contato de um parceiro: e-mail ou telefone, detectado automaticamente."""
@@ -230,7 +241,6 @@ class Contato:
     def __hash__(self) -> int:
         return hash(self._valor)
 
-
 @overload
 def _coagir(valor: object, classe: Type[Contato] | Type[ProtocoloRequerimento]) -> Contato | None:
     ...
@@ -239,7 +249,6 @@ def _coagir(valor: object, classe: Type[Contato] | Type[ProtocoloRequerimento]) 
 def _coagir(valor: object, classe: Type[T]) -> T:
     ...
     
-
 def _coagir(valor, classe):
     # Verifica se o valor passado é diferente de None e adiciona uma camada de aceitação prática aos campos
     if valor is None:

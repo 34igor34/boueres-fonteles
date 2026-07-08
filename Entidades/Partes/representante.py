@@ -1,4 +1,4 @@
-from Entidades.basePessoa import Pessoa
+from Entidades.Partes.basePessoa import Pessoa
 from Util.enums import TipoRepresentante, TipoParte
 from Util.value_objects import CPF
 from dataclasses import dataclass
